@@ -58,3 +58,6 @@ npm run dev
 ```
 
 Open http://localhost:5173
+
+Deployed on vercel - 
+syncvas-client.vercel.app
