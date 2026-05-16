@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Syne", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme */
+html.dark body {
+  background: radial-gradient(circle at top, rgba(0, 229, 255, 0.12), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.16), transparent 18%),
+    #080d14;
+  color: #ffffff;
+}
+
+/* Light theme */
+html.light body {
+  background: radial-gradient(circle at top, rgba(0, 140, 255, 0.08), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.12), transparent 18%),
+    #f0f4f8;
+  color: #1a1a1a;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(0, 229, 255, 0.28);
+}
+
+.canvas-shell {
+  background: transparent;
+}
+
+.sticky-card {
+  backdrop-filter: blur(18px);
+}
+
+.text-input::placeholder {
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.toast-notification {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
