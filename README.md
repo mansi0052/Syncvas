@@ -13,9 +13,38 @@ A real-time collaborative whiteboard built with React, Node.js, Socket.io, and Y
 - Shareable room URLs
 - Undo/Redo and PNG export
 
-## Getting Started
+## 🛠️ Tech Stack
 
+### Frontend
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+### Backend
+- Node.js
+- Express.js
+- Socket.IO
+
+## 📸 Screenshots
+
+### Dashboard UI
+![Dashboard](./screenshots/dashboard.png)
+
+### Whiteboard Feature
+![Whiteboard](./screenshots/whiteboard.png)
+
+## ⚙️ Installation
+
+```bash
+# Clone repository
+git clone https://github.com/mansi0052/Syncvas.git
+
+# Open project folder
+cd Syncvas
+
+# Install dependencies
 npm install
-npm run dev
 
-Open http://localhost:5173
+# Start development server
+npm run dev
