@@ -60,8 +60,6 @@ npm run dev
 Open http://localhost:5173
 
 Deployed on vercel - 
-## 🌐 Live Demo
-
 🔗 ## 🌐 Live Demo
 
-🔗 https://syncvas.vercel.app
+🔗 syncvas-client.vercel.app
