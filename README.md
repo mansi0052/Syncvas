@@ -4,14 +4,21 @@
 
 A real-time collaborative whiteboard built with React, Node.js, Socket.io, and Yjs.
 
-## Features
-- Multiplayer drawing canvas with 6 tools
-- Draggable sticky notes synced across all users
-- Live cursors with username labels
-- Real-time chat panel
-- CRDT-based offline sync (Yjs)
-- Shareable room URLs
-- Undo/Redo and PNG export
+## ✨ Features
+
+- 🖊️ Freehand drawing with 10 tools (pen, eraser, lines, rectangles, circles, triangles, stars, arrows, polygons, text)
+- 📌 Draggable sticky notes synced across all users
+- 👤 Live cursors with username labels
+- 💬 Real-time chat panel with typing indicators
+- 🎤 Built-in voice room (push-to-talk or always-on mode)
+- ↶ Undo / Redo with shared history
+- 🔍 Pan, zoom, and minimap navigation
+- 🔦 Laser pointer for presentations
+- 📤 Export to PNG or PDF
+- 🎨 Pre-built templates to kick-start a board
+- 🌗 Dark & light theme
+- ⚡ CRDT-based conflict-free real-time sync (Yjs)
+- 🔗 Shareable room URLs
 
 ## 🛠️ Tech Stack
 
@@ -32,7 +39,7 @@ A real-time collaborative whiteboard built with React, Node.js, Socket.io, and Y
 ![Dashboard](screenshots/dashboard.png)
 
 ### Whiteboard Feature
-![Whiteboard](screenshots/whiteboard.png)
+![Whiteboard](screenshots/whiteborad.png)
 
 ## ⚙️ Installation
 
@@ -48,3 +55,6 @@ npm install
 
 # Start development server
 npm run dev
+```
+
+Open http://localhost:5173
