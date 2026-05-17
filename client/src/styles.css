@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-html, body, #root {
+html {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -14,23 +14,8 @@ html, body, #root {
 
 body {
   font-family: "Syne", sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Dark theme */
-html.dark body {
-  background: radial-gradient(circle at top, rgba(0, 229, 255, 0.12), transparent 22%),
-    radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.16), transparent 18%),
-    #080d14;
-  color: #ffffff;
-}
-
-/* Light theme */
-html.light body {
-  background: radial-gradient(circle at top, rgba(0, 140, 255, 0.08), transparent 22%),
-    radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.12), transparent 18%),
-    #f0f4f8;
-  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 button, input, textarea {
@@ -38,7 +23,21 @@ button, input, textarea {
 }
 
 ::selection {
-  background: rgba(0, 229, 255, 0.28);
+  background: rgba(0, 180, 220, 0.3);
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background: #0a0f1a;
+  color: #e0e0e0;
+}
+
+html.light body {
+  background: #fafafa;
+  color: #222;
 }
 
 .canvas-shell {
@@ -46,18 +45,18 @@ button, input, textarea {
 }
 
 .sticky-card {
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
 }
 
 .text-input::placeholder {
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(150, 150, 160, 0.6);
 }
 
 .toast-notification {
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }

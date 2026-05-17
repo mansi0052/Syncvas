@@ -18,11 +18,9 @@ export function Minimap() {
     canvas.height = height * scale;
     ctx.scale(scale, scale);
 
-    // Clear
-    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(0, 0, width, height);
 
-    // Compute bounds of all content
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     strokes.forEach((s) => {
       s.points.forEach((p) => {
@@ -39,13 +37,13 @@ export function Minimap() {
       maxY = Math.max(maxY, st.y + st.height);
     });
 
-    if (!isFinite(minX)) return; // empty
+    if (!isFinite(minX)) return;
 
-    const contentWidth = maxX - minX + 200; // padding
+    const contentWidth = maxX - minX + 200;
     const contentHeight = maxY - minY + 200;
     const scaleX = width / contentWidth;
     const scaleY = height / contentHeight;
-    const mapScale = Math.min(scaleX, scaleY, 1); // max 1
+    const mapScale = Math.min(scaleX, scaleY, 1);
 
     const offsetXMap = (width - contentWidth * mapScale) / 2 - minX * mapScale;
     const offsetYMap = (height - contentHeight * mapScale) / 2 - minY * mapScale;
@@ -55,7 +53,6 @@ export function Minimap() {
       y: y * mapScale + offsetYMap,
     });
 
-    // Draw strokes
     strokes.forEach((s) => {
       if (s.points.length < 2) return;
       ctx.beginPath();
@@ -70,33 +67,34 @@ export function Minimap() {
       ctx.stroke();
     });
 
-    // Draw stickies as small rects
+    const stickyColors: Record<string, string> = {
+      yellow: "#fef3c7", pink: "#fbcfe8", green: "#bbf7d0",
+      blue: "#bfdbfe", purple: "#e9d5ff", violet: "#e9d5ff"
+    };
+
     stickies.forEach((st) => {
       const p1 = transform(st.x, st.y);
       const p2 = transform(st.x + st.width, st.y + st.height);
-      ctx.fillStyle = st.color === "yellow" ? "#fef3c7" : st.color === "pink" ? "#fbcfe8" : st.color === "green" ? "#bbf7d0" : st.color === "blue" ? "#bfdbfe" : st.color === "purple" ? "#e9d5ff" : "#fef3c7";
+      ctx.fillStyle = stickyColors[st.color] || "#fef3c7";
       ctx.fillRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
       ctx.strokeStyle = "rgba(0,0,0,0.2)";
       ctx.lineWidth = 1;
       ctx.strokeRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
     });
 
-    // Draw viewport rectangle
     const viewX = -offsetX / zoom;
     const viewY = -offsetY / zoom;
     const viewW = width / zoom;
     const viewH = height / zoom;
     const v1 = transform(viewX, viewY);
     const v2 = transform(viewX + viewW, viewY + viewH);
-    ctx.strokeStyle = "#00e5ff";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#22d3ee";
+    ctx.lineWidth = 1.5;
     ctx.strokeRect(v1.x, v1.y, v2.x - v1.x, v2.y - v1.y);
-    ctx.fillStyle = "rgba(0, 229, 255, 0.1)";
-    ctx.fillRect(v1.x, v1.y, v2.x - v1.x, v2.y - v1.y);
   }, [strokes, stickies, zoom, offsetX, offsetY]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-20 w-40 h-28 border border-cyan-500/40 rounded-lg overflow-hidden bg-black/50 backdrop-blur-sm">
+    <div className="fixed bottom-4 right-4 z-20 w-40 h-28 border border-cyan-200 rounded bg-gray-900/80">
       <canvas ref={canvasRef} className="w-full h-full" />
     </div>
   );

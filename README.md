@@ -39,7 +39,7 @@ A real-time collaborative whiteboard built with React, Node.js, Socket.io, and Y
 ![Dashboard](screenshots/dashboard.png)
 
 ### Whiteboard Feature
-![Whiteboard](screenshots/whiteborad.png)
+![Whiteboard](screenshots/whiteboard.png)
 
 ## ⚙️ Installation
 

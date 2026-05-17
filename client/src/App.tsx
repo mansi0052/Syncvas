@@ -50,70 +50,75 @@ function HomePage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-violet-500 to-pink-500 bg-clip-text text-transparent mb-2">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Syncvas
           </h1>
-          <p className="text-gray-800/60 dark:text-white/60">Real-time collaborative whiteboard</p>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Real-time collaborative whiteboard
+          </p>
         </div>
 
-        {/* Mode selector */}
-        <div className="flex gap-3 mb-6">
+        <div className="flex gap-1.5 mb-5">
           <button
             onClick={() => setMode("create")}
-            className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+            className={`flex-1 py-2 rounded-md text-sm font-medium transition ${
                mode === "create"
-                 ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/30"
-                 : "bg-white/10 text-gray-900 dark:text-slate-300 border border-white/10 hover:bg-white/20"
+                 ? "bg-cyan-500 text-black"
+                 : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
             }`}
           >
             Create Room
           </button>
           <button
             onClick={() => setMode("join")}
-            className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+            className={`flex-1 py-2 rounded-md text-sm font-medium transition ${
                mode === "join"
-                 ? "bg-violet-500 text-black shadow-lg shadow-violet-500/30"
-                 : "bg-white/10 text-gray-900 dark:text-slate-300 border border-white/10 hover:bg-white/20"
-             }`}
+                 ? "bg-violet-500 text-black"
+                 : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+              }`}
           >
             Join Room
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white/10 border border-white/10 backdrop-blur-xl p-8 rounded-3xl space-y-5">
+        <form onSubmit={handleSubmit} className="p-5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-3">
           <div>
-            <label className="block text-sm text-gray-900/70 dark:text-slate-400 mb-2">Display Name</label>
+            <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+              Display Name
+            </label>
             <input
               type="text"
               placeholder="Enter your name"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-               className="w-full bg-white/10 text-gray-900 dark:text-slate-300 px-4 py-3 rounded-xl border border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-gray-800/40 dark:placeholder:text-slate-500"
+              className="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 outline-none focus:border-cyan-500 transition placeholder:text-gray-500"
               maxLength={20}
             />
           </div>
 
           {mode === "join" && (
             <div>
-            <label className="block text-sm text-gray-900/70 dark:text-slate-400 mb-2">Room ID</label>
+            <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+              Room ID
+            </label>
             <input
               type="text"
               placeholder="Enter room ID"
               value={roomId}
               onChange={(e) => setRoomId(e.target.value)}
-              className="w-full bg-white/10 text-gray-900 dark:text-slate-300 px-4 py-3 rounded-xl border border-white/10 outline-none focus:border-cyan-500 transition-colors font-mono placeholder:text-gray-800/40 dark:placeholder:text-slate-500"
+              className="w-full bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 outline-none focus:border-cyan-500 transition font-mono placeholder:text-gray-500"
               />
             </div>
           )}
 
           {mode === "create" && (
-            <div className="p-4 bg-white/10 rounded-xl border border-white/10">
-               <div className="text-sm text-gray-900/60 dark:text-slate-400 mb-1">Your room will be</div>
-              <div className="text-lg font-mono text-cyan-400">
+            <div className="p-2.5 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600">
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                Your room will be
+              </div>
+              <div className="text-sm font-mono text-cyan-600 dark:text-cyan-400">
                 {roomId || "(generating…)"}
               </div>
             </div>
@@ -122,29 +127,28 @@ function HomePage() {
           <button
             type="submit"
             disabled={mode === "join" ? !roomId.trim() : !username.trim()}
-            className={`w-full py-3 rounded-xl font-semibold transition-all ${
+            className={`w-full py-2 rounded-md text-sm font-medium transition ${
               mode === "create"
-                ? "bg-gradient-to-r from-cyan-500 to-violet-500 text-black hover:from-cyan-400 hover:to-violet-400"
-                : "bg-gradient-to-r from-violet-500 to-pink-500 text-black hover:from-violet-400 hover:to-pink-400"
-            } disabled:opacity-50 disabled:cursor-not-allowed shadow-lg`}
+                ? "bg-cyan-500 text-black hover:bg-cyan-600"
+                : "bg-violet-500 text-black hover:bg-violet-600"
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {mode === "create" ? "Create & Join Room" : "Join Room"}
           </button>
         </form>
 
-        {/* Features */}
-        <div className="mt-8 grid grid-cols-2 gap-3 text-sm text-gray-900/60 dark:text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="text-cyan-400">●</span> Multiplayer drawing
+        <div className="mt-8 space-y-1.5">
+          <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+            <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full mr-2"></span>
+            Multiplayer drawing
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-violet-400">●</span> Sticky notes
+          <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+            <span className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-2"></span>
+            Sticky notes & text
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-pink-400">●</span> Live chat
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-emerald-400">●</span> Real-time sync
+          <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+            <span className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-2"></span>
+            Live voice chat
           </div>
         </div>
       </div>
@@ -474,32 +478,34 @@ function Canvas() {
         onToggleTemplate={() => setTemplateMenuOpen(!templateMenuOpen)}
       />
 
-      {/* Template picker modal */}
-      {templateMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setTemplateMenuOpen(false)}>
-          <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-gray-900 dark:text-slate-200 text-lg font-semibold mb-4">Choose Template</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {templates.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => handleTemplateSelect(t.id)}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
-                >
-                  <span className="text-3xl">{t.thumbnail}</span>
-                  <span className="text-gray-900 dark:text-slate-300 text-sm">{t.name}</span>
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={() => setTemplateMenuOpen(false)}
-               className="mt-4 w-full py-2 rounded-lg bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+{/* Template picker modal */}
+       {templateMenuOpen && (
+         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center" onClick={() => setTemplateMenuOpen(false)}>
+           <div className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 w-72" onClick={(e) => e.stopPropagation()}>
+             <h3 className="text-gray-900 dark:text-gray-100 text-base font-medium mb-3">
+               Choose Template
+             </h3>
+             <div className="grid grid-cols-2 gap-2">
+               {templates.map((t) => (
+                 <button
+                   key={t.id}
+                   onClick={() => handleTemplateSelect(t.id)}
+                   className="flex flex-col items-center gap-1 p-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                 >
+                   <span className="text-xl">{t.thumbnail}</span>
+                   <span className="text-gray-800 dark:text-gray-200 text-xs">{t.name}</span>
+                 </button>
+               ))}
+             </div>
+             <button
+               onClick={() => setTemplateMenuOpen(false)}
+                className="mt-3 w-full py-1.5 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+             >
+               Cancel
+             </button>
+           </div>
+         </div>
+       )}
 
       <ChatPanel
         open={chatOpen}
@@ -525,11 +531,11 @@ function Canvas() {
 
        <Minimap />
 
-       {toast && (
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-xl px-6 py-4 rounded-2xl text-gray-900 dark:text-slate-200 border border-white/10">
-           {toast}
-         </div>
-       )}
+{toast && (
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 px-4 py-2.5 rounded-lg text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 shadow-lg">
+            {toast}
+          </div>
+        )}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import type { Tool, Color } from "@shared/types";
 import { useThemeStore } from "../store/useThemeStore";
 
@@ -87,12 +86,8 @@ export function Toolbar({
   const showFillColor = ["rectangle", "circle", "triangle", "star", "polygon"].includes(activeTool);
   const showDashOption = ["line", "rectangle", "circle", "triangle", "star", "polygon"].includes(activeTool);
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-2 left-2 right-96 z-30 bg-white/10 backdrop-blur-xl rounded-2xl px-2 py-1.5 border border-white/10 flex flex-wrap gap-1.5 items-center justify-between max-h-[60px] overflow-y-auto text-[10px]"
-    >
+return (
+    <div className="fixed bottom-3 left-3 right-96 z-30 bg-white dark:bg-gray-800 rounded-lg px-2 py-1.5 border border-gray-200 dark:border-gray-700 flex flex-wrap gap-1 items-center text-[10px] shadow-sm">
       {/* Left section - Tools */}
         <div className="flex items-center gap-1 flex-wrap">
           <div className="flex gap-0.5">
@@ -100,10 +95,10 @@ export function Toolbar({
               <button
                 key={tool}
                 onClick={() => onToolChange(tool)}
-                className={`px-2 py-1 rounded-lg text-[9px] font-medium transition-colors capitalize ${
+                className={`px-1.5 py-0.5 rounded text-[9px] font-medium transition ${
                   activeTool === tool
                     ? "bg-cyan-500 text-black"
-                     : "bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600"
                 }`}
                 title={tool}
               >
@@ -114,27 +109,27 @@ export function Toolbar({
 
         {showTextInput && (
           <>
-            <div className="h-6 w-px bg-white/20 mx-2" />
+            <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 mx-1.5" />
             <input
               type="text"
               placeholder="Enter text..."
               value={textInput}
               onChange={(e) => onTextChange(e.target.value)}
-                className="bg-white/5 text-gray-900 dark:text-slate-300 text-sm px-3 py-1.5 rounded-lg border border-white/10 outline-none focus:border-cyan-500 w-40 placeholder:text-gray-800/40 dark:placeholder:text-slate-500"
+                className="bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 outline-none focus:border-cyan-500 w-36 placeholder:text-gray-500"
               autoFocus
             />
           </>
         )}
       </div>
 
-      {/* Middle section - Styles */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
+{/* Middle section - Styles */}
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <input
             type="color"
             value={strokeColor}
             onChange={(e) => onColorChange(e.target.value)}
-            className="w-8 h-8 rounded-full border-0 cursor-pointer"
+            className="w-6 h-6 rounded cursor-pointer"
             title="Stroke Color"
           />
           {showFillColor && (
@@ -143,8 +138,8 @@ export function Toolbar({
                 type="color"
                 value={fillColor === "transparent" ? "#ffffff" : fillColor}
                 onChange={(e) => onFillColorChange(e.target.value)}
-                className="w-8 h-8 rounded-full border-0 cursor-pointer"
-                title="Fill Color (click empty to clear)"
+                className="w-6 h-6 rounded cursor-pointer"
+                title="Fill Color"
                 onPointerDown={(e) => {
                   if (fillColor !== "transparent") {
                     e.currentTarget.value = fillColor;
@@ -153,8 +148,8 @@ export function Toolbar({
               />
               <button
                 onClick={() => onFillColorChange("transparent")}
-              className={`px-2 py-1 rounded text-xs ${
-                 fillColor === "transparent" ? "bg-cyan-500 text-black" : "bg-white/10 text-gray-900 dark:text-slate-300"
+              className={`px-1.5 py-0.5 rounded text-[10px] ${
+                 fillColor === "transparent" ? "bg-cyan-500 text-black" : "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200"
               }`}
               >
                 No Fill
@@ -163,23 +158,23 @@ export function Toolbar({
           )}
         </div>
 
-        <div className="h-6 w-px bg-white/20" />
+        <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-800/60 dark:text-white/60">Width</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] text-gray-600 dark:text-gray-400">W</span>
           <input
             type="range"
             min={1}
             max={20}
             value={strokeWidth}
             onChange={(e) => onWidthChange(+e.target.value)}
-            className="w-20"
+            className="w-16"
           />
         </div>
 
         {showDashOption && (
           <>
-            <div className="h-6 w-px bg-white/20" />
+            <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
             <select
               value={strokeDash.length > 0 ? (strokeDash[0] === 2 ? "dotted" : "dashed") : "solid"}
               onChange={(e) => {
@@ -187,7 +182,7 @@ export function Toolbar({
                 else if (e.target.value === "dashed") onDashChange([8, 4]);
                 else if (e.target.value === "dotted") onDashChange([2, 4]);
               }}
-               className="bg-white/10 text-gray-900 dark:text-slate-300 text-sm px-2 py-1 rounded border border-white/20"
+              className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-[10px] px-1 py-0.5 rounded border border-gray-300 dark:border-gray-600"
             >
               <option value="solid">Solid</option>
               <option value="dashed">Dashed</option>
@@ -200,16 +195,16 @@ export function Toolbar({
       {/* Selection actions */}
       {selectedCount > 0 && (
         <>
-          <div className="h-6 w-px bg-white/20" />
+          <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
           <div className="flex items-center gap-1">
-            <span className="text-xs text-gray-800/60 dark:text-slate-400">{selectedCount} selected</span>
-            <button onClick={onDuplicate} className="px-2 py-1 rounded text-xs bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20">
-              Duplicate
+            <span className="text-[10px] text-gray-600 dark:text-gray-400">{selectedCount}</span>
+            <button onClick={onDuplicate} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500">
+              Dup
             </button>
-            <button onClick={onBringToFront} className="px-2 py-1 rounded text-xs bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20">
+            <button onClick={onBringToFront} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500">
               Front
             </button>
-            <button onClick={onSendToBack} className="px-2 py-1 rounded text-xs bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20">
+            <button onClick={onSendToBack} className="px-1.5 py-0.5 rounded text-[10px] bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500">
               Back
             </button>
           </div>
@@ -217,70 +212,70 @@ export function Toolbar({
       )}
 
       {/* Right section - Actions */}
-      <div className="flex items-center gap-2">
-        <div className="h-6 w-px bg-white/20" />
+      <div className="flex items-center gap-1.5">
+        <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
 
-        <div className="flex gap-1">
+        <div className="flex gap-0.5">
           <button
             onClick={onUndo}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
           >
-            ↶ Undo
+            ↶
           </button>
           <button
             onClick={onRedo}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
           >
-            ↷ Redo
+            ↷
           </button>
         </div>
 
-        <div className="h-6 w-px bg-white/20" />
+        <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
 
-        <div className="flex gap-1">
+        <div className="flex gap-0.5">
           <button
             onClick={onAddSticky}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 hover:bg-yellow-200 dark:hover:bg-yellow-900/50"
           >
-            📌 Sticky
+            📌
           </button>
           <button
             onClick={onClear}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-red-500/20 hover:text-red-300"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-800 dark:hover:text-red-300"
           >
-            Clear
+            ✕
           </button>
         </div>
 
-        <div className="h-6 w-px bg-white/20" />
+        <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={onExportPNG}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
           >
-            📷 PNG
+            PNG
           </button>
           <button
             onClick={onExportPDF}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
           >
-            📄 PDF
+            PDF
           </button>
           <button
             onClick={onToggleTemplate}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-violet-500/20 text-violet-300 hover:bg-violet-500/30"
+            className="px-2 py-0.5 rounded text-[10px] font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50"
           >
-            Templates
+            ⛏
           </button>
         </div>
 
-        <div className="h-6 w-px bg-white/20" />
+        <div className="h-4 w-px bg-gray-300 dark:bg-gray-600" />
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={toggleTheme}
-            className="px-2 py-1 rounded-lg text-[9px] font-medium bg-white/10 text-gray-900 dark:text-slate-200 hover:bg-white/20 transition-colors"
+            className="px-1 py-0.5 rounded text-[9px] font-medium bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
             title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
             {theme === "dark" ? "☀️" : "🌙"}
@@ -288,10 +283,10 @@ export function Toolbar({
 
           <button
             onClick={onToggleVoice}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+            className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
               isVoiceActive
-                ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                 : "bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+                ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
+                : "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
             }`}
           >
             {isVoiceActive ? "🎤" : "🔇"}
@@ -299,10 +294,10 @@ export function Toolbar({
 
           <button
             onClick={onToggleLaser}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+            className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
               isLaserActive
-                ? "bg-red-500/20 text-red-300 border border-red-500/30"
-                : "bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20"
+                ? "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300"
+                : "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500"
             }`}
           >
             {isLaserActive ? "🔴" : "⚡"}
@@ -310,21 +305,21 @@ export function Toolbar({
 
           <button
             onClick={onZoomOut}
-            className="w-8 h-8 rounded-lg bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20 transition-colors text-sm font-semibold"
+            className="w-5 h-5 rounded bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors text-xs font-semibold"
           >
             −
           </button>
-          <span className="text-xs text-gray-800/60 dark:text-slate-400 w-12 text-center">
+          <span className="text-[10px] text-gray-600 dark:text-gray-400 w-10 text-center">
             {Math.round(zoom * 100)}%
           </span>
           <button
             onClick={onZoomIn}
-            className="w-8 h-8 rounded-lg bg-white/10 text-gray-900 dark:text-slate-300 hover:bg-white/20 transition-colors text-sm font-semibold"
+            className="w-5 h-5 rounded bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors text-xs font-semibold"
           >
             +
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import type { PointerEvent, FocusEvent } from "react";
 import type { StickyNote as StickyNoteType } from "@shared/types";
@@ -11,13 +10,13 @@ interface StickyNoteProps {
   onDelete: (id: string) => void;
 }
 
-const colorStyles: Record<StickyNoteType["color"], string> = {
-  yellow: "from-yellow-200 to-yellow-100 border-yellow-300",
-  pink: "from-pink-200 to-pink-100 border-pink-300",
-  green: "from-emerald-200 to-emerald-100 border-emerald-300",
-  blue: "from-sky-200 to-sky-100 border-sky-300",
-  purple: "from-violet-200 to-violet-100 border-violet-300",
-  violet: "from-violet-200 to-violet-100 border-violet-300",
+const colorStyles: Record<StickyNoteType["color"], { bg: string; border: string }> = {
+  yellow: { bg: "bg-yellow-100", border: "border-yellow-300" },
+  pink: { bg: "bg-pink-100", border: "border-pink-300" },
+  green: { bg: "bg-green-100", border: "border-green-300" },
+  blue: { bg: "bg-blue-100", border: "border-blue-300" },
+  purple: { bg: "bg-purple-100", border: "border-purple-300" },
+  violet: { bg: "bg-purple-100", border: "border-purple-300" },
 };
 
 export function StickyNote({ note, scale = 1, onDrag, onUpdate, onDelete }: StickyNoteProps) {
@@ -72,10 +71,8 @@ export function StickyNote({ note, scale = 1, onDrag, onUpdate, onDelete }: Stic
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className={`absolute z-10 rounded-3xl border bg-gradient-to-br ${colorStyles[note.color]} p-4 shadow-lg`}
+    <div
+      className={`absolute z-10 rounded-md border ${colorStyles[note.color].bg} ${colorStyles[note.color].border} p-3 shadow-sm`}
       style={{
         left: note.x * scale,
         top: note.y * scale,
@@ -87,22 +84,20 @@ export function StickyNote({ note, scale = 1, onDrag, onUpdate, onDelete }: Stic
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
     >
-      <div className="flex items-center justify-between gap-3">
-        <div className="rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300">
-          {note.color}
-        </div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-[9px] text-gray-600">{note.color}</div>
         <div className="flex items-center gap-1">
           {showDeleteConfirm ? (
             <>
               <button
                 onClick={confirmDelete}
-                className="text-xs font-semibold px-2 py-0.5 rounded bg-red-500 text-white hover:bg-red-600 transition-colors"
+                className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-red-500 text-white hover:bg-red-600"
               >
                 Yes
               </button>
               <button
                 onClick={cancelDelete}
-                className="text-xs px-2 py-0.5 rounded bg-white/20 text-slate-700 hover:bg-white/30 transition-colors"
+                className="text-[10px] px-1.5 py-0.5 rounded bg-gray-200 text-gray-800 hover:bg-gray-300"
               >
                 No
               </button>
@@ -111,8 +106,8 @@ export function StickyNote({ note, scale = 1, onDrag, onUpdate, onDelete }: Stic
             <button
               ref={deleteButtonRef}
               onClick={handleDeleteClick}
-              className="text-sm text-slate-700 transition-colors hover:text-red-600 hover:bg-red-100 rounded-full w-6 h-6 flex items-center justify-center"
-              title="Delete sticky note"
+              className="text-[10px] text-gray-600 hover:text-red-600 rounded"
+              title="Delete"
             >
               ✕
             </button>
@@ -123,10 +118,10 @@ export function StickyNote({ note, scale = 1, onDrag, onUpdate, onDelete }: Stic
         contentEditable
         suppressContentEditableWarning
         onBlur={handleBlur}
-        className="mt-3 min-h-[100px] break-words whitespace-pre-wrap rounded-3xl bg-white/70 px-3 py-3 text-sm font-caveat text-slate-900 outline-none"
+        className="mt-2 min-h-[80px] break-words rounded bg-white/80 px-2 py-1.5 text-[11px] text-gray-900 outline-none"
       >
         {note.text}
       </div>
-    </motion.div>
+    </div>
   );
 }
