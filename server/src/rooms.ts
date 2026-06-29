@@ -68,5 +68,6 @@ export function addMessage(roomId: string, message: ChatMessage): RoomState {
 export function clearStrokes(roomId: string): RoomState {
   const room = getRoom(roomId);
   room.strokes = [];
+  room.stickies = [];
   return room;
 }

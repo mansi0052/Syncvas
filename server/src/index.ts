@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -6,6 +7,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const socketIo = require("socket.io");
 import type { Server as HTTPServer } from "http";
+import { connectDB, loadRoomState, saveStroke, saveSticky, saveMessage, clearRoomData, removeSticky } from "./db.js";
+import { addStroke, addSticky, updateSticky, deleteSticky } from "./rooms.js";
 
 import {
   addMessage,
@@ -18,6 +21,7 @@ import { attachYjsServer } from "./yjsServer";
 import type { ChatMessage, StickyNote, StrokeData, User } from "../../shared/types";
 
 const app = express();
+connectDB();
 const port = Number(process.env.PORT || 3001);
 const server = http.createServer(app);
 
@@ -116,29 +120,36 @@ io.on("connection", (socket: any) => {
     });
 
     // ========== Room Management ==========
-    socket.on("join-room", (payload: { roomId: string; userId: string; username: string; color: string }) => {
-      try {
-        const { roomId, userId, username, color } = payload;
-        const room = getRoom(roomId);
-        const user: User = { id: userId, username, color, lastSeen: Date.now() };
+    socket.on("join-room", async (payload: { roomId: string; userId: string; username: string; color: string }) => {
+  try {
+    const { roomId, userId, username, color } = payload;
+    const user: User = { id: userId, username, color, lastSeen: Date.now() };
+    addUser(roomId, user);
+    socket.join(roomId);
+    socket.data.roomId = roomId;
+    socket.data.userId = userId;
+    socket.data.username = username;
 
-        addUser(roomId, user);
-        socket.join(roomId);
-        socket.data.roomId = roomId;
-        socket.data.userId = userId;
-        socket.data.username = username;
+    const persisted = await loadRoomState(roomId);
+    const room = getRoom(roomId);
+    persisted.strokes.forEach((s: any) => addStroke(roomId, s));
+    persisted.stickies.forEach((s: any) => addSticky(roomId, s));
+    if (room.messages.length === 0) {
+      persisted.messages.forEach((m: any) => addMessage(roomId, m));
+    }
 
-        io.to(roomId).emit("user-joined", { userId, username, color, users: room.users });
-        socket.emit("room-state", {
-          users: room.users,
-          messages: room.messages,
-        });
-
-        console.log(`[Syncvas] ${username} joined room ${roomId}`);
-      } catch (err) {
-        console.error("[Room] Error in join-room:", err);
-      }
+    io.to(roomId).emit("user-joined", { userId, username, color, users: room.users });
+    socket.emit("room-state", {
+      users: room.users,
+      messages: room.messages,
+      strokes: room.strokes,
+      stickies: room.stickies,
     });
+    console.log(`[Syncvas] ${username} joined room ${roomId} | users: ${room.users.length}`);
+  } catch (err) {
+    console.error("[Room] Error in join-room:", err);
+  }
+});
 
     socket.on("leave-room", (payload: { roomId: string; userId: string }) => {
       try {
@@ -155,14 +166,16 @@ io.on("connection", (socket: any) => {
     });
 
     // ========== Whiteboard State Sync ==========
-    socket.on("draw-stroke", (payload: { roomId: string; stroke: StrokeData }) => {
-      try {
-        const { roomId, stroke } = payload;
-        socket.to(roomId).emit("stroke-added", stroke);
-      } catch (err) {
-        console.error("[Whiteboard] Error in draw-stroke:", err);
-      }
-    });
+    socket.on("draw-stroke", async (payload: { roomId: string; stroke: StrokeData }) => {
+  try {
+    const { roomId, stroke } = payload;
+    addStroke(roomId, stroke);
+    await saveStroke(roomId, stroke);
+    socket.to(roomId).emit("stroke-added", stroke);
+  } catch (err) {
+    console.error("[Whiteboard] Error in draw-stroke:", err);
+  }
+});
 
     socket.on("cursor-move", (payload: { roomId: string; userId: string; x: number; y: number }) => {
       try {
@@ -177,14 +190,16 @@ io.on("connection", (socket: any) => {
       }
     });
 
-    socket.on("add-sticky", (payload: { roomId: string; sticky: StickyNote }) => {
-      try {
-        const { roomId, sticky } = payload;
-        socket.to(roomId).emit("sticky-added", { sticky });
-      } catch (err) {
-        console.error("[Whiteboard] Error in add-sticky:", err);
-      }
-    });
+    socket.on("add-sticky", async (payload: { roomId: string; sticky: StickyNote }) => {
+  try {
+    const { roomId, sticky } = payload;
+    addSticky(roomId, sticky);
+    await saveSticky(roomId, sticky);
+    socket.to(roomId).emit("sticky-added", { sticky });
+  } catch (err) {
+    console.error("[Whiteboard] Error in add-sticky:", err);
+  }
+});
 
     socket.on("update-sticky", (payload: { roomId: string; stickyId: string; changes: Partial<StickyNote> }) => {
       try {
@@ -195,22 +210,27 @@ io.on("connection", (socket: any) => {
       }
     });
 
-    socket.on("delete-sticky", (payload: { roomId: string; stickyId: string }) => {
-      try {
-        const { roomId, stickyId } = payload;
-        socket.to(roomId).emit("sticky-deleted", { stickyId });
-      } catch (err) {
-        console.error("[Whiteboard] Error in delete-sticky:", err);
-      }
-    });
+    socket.on("delete-sticky", async (payload: { roomId: string; stickyId: string }) => {
+  try {
+    const { roomId, stickyId } = payload;
+    deleteSticky(roomId, stickyId);
+    await removeSticky(roomId, stickyId);
+    socket.to(roomId).emit("sticky-deleted", { stickyId });
+  } catch (err) {
+    console.error("[Whiteboard] Error in delete-sticky:", err);
+  }
+});
 
-    socket.on("clear-canvas", (payload: { roomId: string }) => {
-      try {
-        io.to(payload.roomId).emit("canvas-cleared", {});
-      } catch (err) {
-        console.error("[Whiteboard] Error in clear-canvas:", err);
-      }
-    });
+    socket.on("clear-canvas", async (payload: { roomId: string }) => {
+  try {
+    const { roomId } = payload;
+    clearStrokes(roomId);
+    await clearRoomData(roomId);
+    io.to(roomId).emit("canvas-cleared", {});
+  } catch (err) {
+    console.error("[Whiteboard] Error in clear-canvas:", err);
+  }
+});
 
     // ========== Chat ==========
     socket.on("chat-message", (payload: ChatMessage & { roomId: string }) => {

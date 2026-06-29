@@ -1,0 +1,100 @@
+{
+  "hash": "7cb22f0d",
+  "configHash": "0949ec39",
+  "lockfileHash": "f22845ad",
+  "browserHash": "7c735d3f",
+  "optimized": {
+    "framer-motion": {
+      "src": "../../../node_modules/framer-motion/dist/es/index.mjs",
+      "file": "framer-motion.js",
+      "fileHash": "98ae4e30",
+      "needsInterop": false
+    },
+    "jspdf": {
+      "src": "../../../node_modules/jspdf/dist/jspdf.es.min.js",
+      "file": "jspdf.js",
+      "fileHash": "c8256f76",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "d46e9ac3",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "23798f29",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "d4f5c659",
+      "needsInterop": false
+    },
+    "roughjs/bin/rough": {
+      "src": "../../../node_modules/roughjs/bin/rough.js",
+      "file": "roughjs_bin_rough.js",
+      "fileHash": "281116ef",
+      "needsInterop": false
+    },
+    "socket.io-client": {
+      "src": "../../../node_modules/socket.io-client/build/esm/index.js",
+      "file": "socket__io-client.js",
+      "fileHash": "06f35768",
+      "needsInterop": false
+    },
+    "y-websocket": {
+      "src": "../../../node_modules/y-websocket/src/y-websocket.js",
+      "file": "y-websocket.js",
+      "fileHash": "fdd7df6e",
+      "needsInterop": false
+    },
+    "yjs": {
+      "src": "../../../node_modules/yjs/dist/yjs.mjs",
+      "file": "yjs.js",
+      "fileHash": "32289a94",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "f76decf7",
+      "needsInterop": false
+    },
+    "zustand/middleware": {
+      "src": "../../../node_modules/zustand/esm/middleware.mjs",
+      "file": "zustand_middleware.js",
+      "fileHash": "e6e77686",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "html2canvas.esm-4VKYFRNL": {
+      "file": "html2canvas__esm-4VKYFRNL.js"
+    },
+    "purify.es-MZ3VZOBY": {
+      "file": "purify__es-MZ3VZOBY.js"
+    },
+    "index.es-GO73YKMS": {
+      "file": "index__es-GO73YKMS.js"
+    },
+    "chunk-JRJ5JSPZ": {
+      "file": "chunk-JRJ5JSPZ.js"
+    },
+    "chunk-7WLGICDE": {
+      "file": "chunk-7WLGICDE.js"
+    },
+    "chunk-S7PAVP2U": {
+      "file": "chunk-S7PAVP2U.js"
+    },
+    "chunk-AKZ4NHWA": {
+      "file": "chunk-AKZ4NHWA.js"
+    },
+    "chunk-DC5AMYBS": {
+      "file": "chunk-DC5AMYBS.js"
+    }
+  }
+}
